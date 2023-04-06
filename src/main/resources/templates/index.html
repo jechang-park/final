@@ -48,7 +48,19 @@
         <a href="">AI분석</a>
         <a href="">커뮤니티</a>
         <a href="">약국정보</a>
-        <a href="">로그인</a>
+        <div th:if="${!session.isEmpty()}">
+
+          <p th:text="${session.loginMember.gubun}"></p>
+        </div>
+        <ul>
+          <th:bolck th:if="${session.isEmpty()}">
+            <li><a href="" th:href="@{/login}">로그인</a></li>
+            <li><a href="" th:href="@{/members/add}">회원가입</a></li>
+          </th:bolck>
+          <th:bolck th:unless="${session.isEmpty()}">
+            <li><a href="" th:href="@{/logout}">로그아웃</a></li>
+          </th:bolck>
+        </ul>
       </nav>
     </div>
   </header>
@@ -324,7 +336,22 @@
       </div>
 
       <!--footer - copyright -->
+<div>
+  <div th:if="${!session.isEmpty()}">
 
+    <p th:text="${session.loginMember.gubun}"></p>
+  </div>
+  <ul>
+    <th:bolck th:if="${session.isEmpty()}">
+      <li><a href="" th:href="@{/login}">로그인</a></li>
+      <li><a href="" th:href="@{/members/add}">회원가입</a></li>
+    </th:bolck>
+    <th:bolck th:unless="${session.isEmpty()}">
+      <li><a href="" th:href="@{/logout}">로그아웃</a></li>
+    </th:bolck>
+  </ul>
+<!--  임시-->
+</div>
       <div class="copyright">
         <p>Copyright 2023 YAGIYO. Allrights reserved.</p>
       </div>
