@@ -64,5 +64,38 @@ public class MemberSVCImpl implements MemberSVC {
   public Optional<String> findEmailByNickname(String nick) {
     return Optional.empty();
   }
+
+  @Override
+  public String emailCheck(String email) {
+    Optional<Member> byMemberEmail = memberDAO.findByEmail(email);
+    if (byMemberEmail.isPresent()) {
+      // 조회 결과가 있다 -> 사용할 수 없다.
+      return null;
+    }else {
+      // 조회결과가 없다 -> 사용할 수 있다.
+    }
+    return "ok";
   }
+
+  @Override
+  public String idCheck(String id) {
+    Optional<Member> byMemberid = memberDAO.findById(id);
+    if (byMemberid.isPresent()) {
+    return null;
+  }else {
+
+  }
+    return "ok";
+}
+
+  @Override
+  public String nickCheck(String nick) {
+    Optional<Member> byMemberNick = memberDAO.findByNick(nick);
+    if (byMemberNick.isPresent()) {
+    return null;
+  }else{
+    }
+    return "ok";
+  }
+}
 

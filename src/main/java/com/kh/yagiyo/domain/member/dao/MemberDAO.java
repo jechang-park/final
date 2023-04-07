@@ -20,7 +20,7 @@ Member save(Member member);
   Optional<Member> findByEmail(String email);
 
   //조회 by member_id
-  Optional<Member> findById(Long MemberId);
+  Optional<Member> findById(String id);
 
   //전체조회
   List<Member> findAll();
@@ -36,5 +36,7 @@ Member save(Member member);
 
   //아이디찾기
   Optional<String> findEmailByNickname(String nick);
+
+  Optional<Member> findByNick(String nick);
 
 }

@@ -83,7 +83,7 @@ public class MemberDAOImpl implements MemberDAO {
   @Override
   public Optional<Member> findByEmail(String email) {
     StringBuffer sql = new StringBuffer();
-    sql.append("select member_id, ");
+    sql.append("select memberid, ");
     sql.append("       id ");
     sql.append("       pw, ");
     sql.append("       nick, ");
@@ -108,13 +108,13 @@ public class MemberDAOImpl implements MemberDAO {
   }
 
   /**
-   * @param memberId
+   * @param
    * @return
    */
   @Override
-  public Optional<Member> findById(Long memberId) {
+  public Optional<Member> findById(String id) {
     StringBuffer sql = new StringBuffer();
-    sql.append("select member_id as memberId, ");
+    sql.append("select memberid, ");
     sql.append("       id ");
     sql.append("       pw, ");
     sql.append("       nick, ");
@@ -122,10 +122,10 @@ public class MemberDAOImpl implements MemberDAO {
     sql.append("       gender, ");
     sql.append("       age ");
     sql.append("  from member ");
-    sql.append(" where memberid = :memberid ");
+    sql.append(" where id = :id ");
 
     try {
-      Map<String, Long> param = Map.of("memberid", memberId);
+      Map<String, String> param = Map.of("id", id);
       Member member = template.queryForObject(
           sql.toString(),
           param,
@@ -238,5 +238,31 @@ public class MemberDAOImpl implements MemberDAO {
     );
 
     return (result.size() == 1) ? Optional.of(result.get(0)) : Optional.empty();
+  }
+
+  @Override
+  public Optional<Member> findByNick(String nick) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("select memberid, ");
+    sql.append("       id ");
+    sql.append("       pw, ");
+    sql.append("       nick, ");
+    sql.append("       email, ");
+    sql.append("       gender, ");
+    sql.append("       age ");
+    sql.append("  from member ");
+    sql.append(" where nick = :nick ");
+
+    try {
+      Map<String, String> param = Map.of("nick", nick);
+      Member member = template.queryForObject(
+          sql.toString(),
+          param,
+          BeanPropertyRowMapper.newInstance(Member.class)
+      );
+      return Optional.of(member);
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
   }
 }

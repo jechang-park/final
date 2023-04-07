@@ -8,12 +8,12 @@ const $nickError = document.getElementById('nickError');
 const $id = document.getElementById('id');
 const $idError = document.getElementById('idError');
 const $codeBtn = document.getElementById('codeBtn');
-const $emailError = document.getElementById('emailError');
 const $directInput = document.getElementById('directInput');
 const $emailSelect = document.getElementById('emailSelect');
 const $email = document.getElementById('email');
+const $emailError = document.getElementById('emailError');
 const $naver = document.getElementById('naver');
-const $google = document.getElementById('google');
+const $gmail = document.getElementById('gmail');
 const $daum = document.getElementById('daum');
 const $finishBtn = document.getElementById('finishBtn');
 const $man = document.getElementById('man');
@@ -111,31 +111,13 @@ function idLengthChk() {
 }
 $id.addEventListener('input', idLengthChk);
 
-// 이메일 선택시 자동완성
-
-//인증버튼발송 버튼 활성화하기
-function emailCheckInputs() {
-  const emailCheck = $email.value.trim();
-  if (
-    (emailCheck !== '' &&
-      emailCheck.includes('@') &&
-      emailCheck.includes('naver.com')) ||
-    emailCheck.includes('daum.net') ||
-    emailCheck.includes('google.com')
-  ) {
-    $emailError.style.color = 'green';
-    $emailError.innerHTML = 'Success';
-    $codeBtn.disabled = false;
-  } else {
-    $codeBtn.disabled = true;
-    $emailError.innerHTML = '';
-  }
-}
+// 이메일 선택시 자동완료 기능
 
 function emailSelectAuto() {
   const emailValue = $email.value;
   //직접 입력인 경우
   if ($directInput.selected) {
+
     $email.value = emailValue.replace(/.*/, '');
     $codeBtn.disabled = true;
     $emailError.innerHTML = '';
@@ -144,25 +126,28 @@ function emailSelectAuto() {
     // '@' 문자가 없는 경우
     if ($naver.selected) {
       $email.value = emailValue + '@naver.com';
-      emailCheckInputs();
-    } else if ($google.selected) {
-      $email.value = emailValue + '@google.com';
-      emailCheckInputs();
+      emailCheck();
+    } else if ($gmail.selected) {
+      $email.value = emailValue + '@gmail.com';
+      emailCheck();
     } else if ($daum.selected) {
       $email.value = emailValue + '@daum.net';
-      emailCheckInputs();
+      emailCheck();
     }
   } else {
     //'@' 문자가 있는경우
     if ($naver.selected) {
       $email.value = emailValue.replace(/@.*/, '@naver.com');
-      emailCheckInputs();
-    } else if ($google.selected) {
-      $email.value = emailValue.replace(/@.*/, '@google.com');
-      emailCheckInputs();
+      emailCheck();
+
+    } else if ($gmail.selected) {
+      $email.value = emailValue.replace(/@.*/, '@gmail.com');
+      emailCheck();
+
     } else if ($daum.selected) {
       $email.value = emailValue.replace(/@.*/, '@daum.net');
-      emailCheckInputs();
+      emailCheck();
+
     }
   }
 }
@@ -185,6 +170,7 @@ function CheckInputs() {
     $pwError.innerHTML === 'Success' &&
     $idError.innerHTML === 'Success' &&
     $nickError.innerHTML === 'Success' &&
+    $emailError.innerHTML === 'Success' &&
     ((emailCheck.includes('@') && emailCheck.includes('.com')) ||
       emailCheck.includes('.net'))
   ) {
@@ -206,14 +192,15 @@ function CheckInputs() {
     pw_check !== '' &&
     nickCheck !== '' &&
     emailCheck !== '' &&
-    $checkboxIdentity.checked &&
-    $checkboxAgree.checked
+    $checkboxIdentity.checked==true &&
+    $checkboxAgree.checked==true
   ) {
     $finishBtn.disabled = false;
   } else {
     $finishBtn.disabled = true;
   }
 }
+
 
 function AllCheckInputs() {
   $id.addEventListener('input', CheckInputs);
@@ -312,59 +299,122 @@ $pw_check.addEventListener('input', function () {
   }
 });
 
-//닉네임 허용 문자 체크
-
-// $nick.addEventListener('input', function () {
-//   const inputValue = $nick.value;
-//   const regex = /[^ !@#$%^&*()~`<>?{}[\];"':\-+=| ]+/g;
-//   if (!regex.test(inputValue)) {
-//     $nickError.style.color = 'red';
-//     $nickError.innerHTML = '잘못된입력입니다.';
-//   }
-// });
-
 //이메일 허용 문자 체크,인증버튼 활성화
-
 //인증버튼 활성화
 //인증버튼발송 버튼 활성화하기
+ // 이메일 중복 체크
+ // 필수 기입사항 모두 success 일시 선택,약관동의 활성화
 
-function emailCheckInputs() {
-  const regex = /[^A-Za-z0-9@.]+/g;
-  const emailCheck = $email.value.trim();
-  const inputValue = $email.value;
-  if (
-    (emailCheck !== '' &&
-      emailCheck.includes('@') &&
-      emailCheck.includes('.com')) ||
-    emailCheck.includes('.net')
-  ) {
-    $codeBtn.disabled = false;
-    $emailError.style.color = 'green';
-    $emailError.innerHTML = 'Success';
-  } else {
-    $codeBtn.disabled = true;
-  }
-}
+  const emailCheck = () => {
+    const inputValue = $email.value.trim();
+    const emailError = document.getElementById("emailError");
+    const regex = /[^A-Za-z0-9@. ]+/g;
 
-$email.addEventListener('input', function () {
-  const inputValue = $email.value;
-  const regex = /[^A-Za-z0-9@. ]+/g;
-  emailCheckInputs();
-  if (regex.test(inputValue)) {
-    $emailError.style.color = 'red';
-    $emailError.innerHTML = '잘못된 입력입니다.';
-    emailCheckInputs();
-  } else if (
-    (inputValue.includes('@') && inputValue.includes('.com')) ||
-    inputValue.includes('.net')
-  ) {
-    $emailError.style.color = 'green';
-    $emailError.innerHTML = 'Success';
-    emailCheckInputs();
-  } else {
-    $emailError.innerHTML = '';
-  }
-});
+    if (regex.test(inputValue)) {
+      emailError.style.color = 'red';
+      emailError.innerHTML = '잘못된 입력입니다.';
+      return;
+    }
+    $.ajax({
+      type: "post",
+      url: "/members/email-check",
+      data: { "email": inputValue },
+      success: function(res) {
+        if (res !== "ok") {
+          emailError.style.color = 'red';
+          emailError.innerHTML = "이미 사용중인 이메일 입니다.";
+        } else if (res == "ok" &&
+         $pwChkError.innerHTML === 'Success' &&
+            $pwError.innerHTML === 'Success' &&
+            $idError.innerHTML === 'Success' &&
+            $nickError.innerHTML === 'Success' &&
+          (inputValue.includes('@') && inputValue.includes('.com')) ||
+          inputValue.includes('.net')
+        ) {
+          emailError.style.color = 'green';
+          emailError.innerHTML = 'Success';
+          $codeBtn.disabled = false;
+          $man.disabled = false;
+              $women.disabled = false;
+              $age.disabled = false;
+              $checkboxIdentity.disabled = false;
+              $checkboxAgree.disabled = false;
+          } else {
+          emailError.innerHTML = '';
+          $codeBtn.disabled = true;
+          $man.disabled = true;
+          $women.disabled = true;
+          $age.disabled = true;
+          $checkboxIdentity.disabled = true;
+          $checkboxAgree.disabled = true;
+        }
+      },
+      error: function(err) {
+        console.log("에러발생",err);
+      }
+    });
+  };
+  $email.addEventListener('input', emailCheck);
+
+const idCheck = () => {
+  const id = document.getElementById('id');
+  const $idError = document.getElementById('idError');
+
+  $.ajax({
+    type: "POST",
+    url: "/members/id-check",
+    data: { "id": id.value },
+    success: function(res) {
+      if (res !== "ok") {
+        $idError.style.color = 'red';
+        $idError.innerHTML = "이미 사용중인 아이디 입니다.";
+      } else {
+      }
+    },
+    error: function(err) {
+      console.log("에러 발생", err);
+    }
+  });
+};
+
+id.addEventListener('input', idCheck);
+
+//닉네임 중복 확인
+
+const nickCheck = () => {
+  const nick = document.getElementById('nick');
+  const $nickError = document.getElementById('nickError');
+
+  $.ajax({
+    type: "POST",
+    url: "/members/nick-check",
+    data: { "nick": nick.value },
+    success: function(res) {
+      if (res !== "ok") {
+        $nickError.style.color = 'red';
+        $nickError.innerHTML = "이미 사용중인 닉네임 입니다.";
+      } else {
+      }
+    },
+    error: function(err) {
+      console.log("에러 발생", err);
+    }
+  });
+};
+
+nick.addEventListener('input', nickCheck);
+
+
+
+
+
+
+
+
+
+
+
+
 
 //해야하는거 아이디 중복확인 데이터베이스 필요
 // 닉네임 중복확인 데이터베이스 필요

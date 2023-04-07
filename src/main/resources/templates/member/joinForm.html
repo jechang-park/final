@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../../static/css/signup.css" th:href="@{/css/signup.css}">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
   <title>회원가입</title>
 </head>
 <body>
@@ -101,6 +102,7 @@
               required
               type="email"
               th:field="*{email}"
+              id="email"
               class="container_contents_item_input"
           />
           <label for="emailSelect">
@@ -114,7 +116,7 @@
                   @직접입력
                 </option>
                 <option id="naver" value="naver">@naver.com</option>
-                <option id="google" value="google">@google.com</option>
+                <option id="gmail" value="gmail">@gmail.com</option>
                 <option id="daum" value="daum">@daum.net</option>
               </select>
             </form>
@@ -225,7 +227,6 @@
 
       <div>
         <button
-            th:text="#{button.join}"
             disabled
             id="finishBtn"
             type="submit"
@@ -240,35 +241,7 @@
 </div>
   </form>
 <script type="text/javascript" th:src="@{../js/signup.js}"></script>
-<script type="module">
-      import { ajax } from '/js/common.js';
-
-    const $id = document.getElementById('id');
-
-    const chkEmail = res => {
-      if(res.header.rtcd == '00'){
-        if(res.data){
-          $id.nextElementSibling.textContent='사용중인 아이디 입니다.'
-          $id.focus();
-        }else{
-          $id.nextElementSibling.textContent='사용가능한 아이디 입니다.'
-        }
-      }else if(res.header.rtcd == '01'){
-          $id.nextElementSibling.textContent=`${res.header.rtmsg}`
-          $id.focus();
-      }
-    }
-
-    const chkId_h = e =>{
-      console.log('');
-      const url = `/api/members/id?id=${$id.value}`;
-      ajax.get(url)
-          .then(res=>res.json())
-          .then(chkId_h)         //res=>chkId_h(res)
-          .catch(console.error);   //err=>console.error(err)
-    }
-    $id.addEventListener('',chkId_h,false);
-
-  </script>
 </body>
+
+
 </html>

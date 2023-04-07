@@ -91,6 +91,29 @@ public class MemberController {
       memberSVC.save(member);
       return "/member/joinSuccess";
     }
+    //이메일 중복체크
+@PostMapping("email-check")
+  public @ResponseBody String emailCheck(@RequestParam("email") String email){
+  System.out.println("email = " + email);
+  String checkResult = memberSVC.emailCheck(email);
+  return checkResult;
+}
+  @PostMapping("id-check")
+  public @ResponseBody String idCheck(@RequestParam("id") String id){
+    System.out.println("id = " + id);
+    String checkResult = memberSVC.idCheck(id);
+    return checkResult;
+
+  }
+  @PostMapping("nick-check")
+  public @ResponseBody String nickCheck(@RequestParam("nick") String nick){
+    System.out.println("nick = " + nick);
+    String checkResult = memberSVC.nickCheck(nick);
+    return checkResult;
+
+  }
+
+
   }
 
 
