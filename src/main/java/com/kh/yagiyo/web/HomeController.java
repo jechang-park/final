@@ -14,4 +14,9 @@ public class HomeController {
   public String home(){
     return "index";
   }
+
+  @GetMapping("/findMember/id")
+  public String findMemberById() {
+    return "/member/mypage";
+  }
 }

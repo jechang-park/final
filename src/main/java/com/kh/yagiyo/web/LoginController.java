@@ -84,4 +84,24 @@ public class LoginController {
     }
     return "redirect:/";
   }
+
+  //마이페이지
+  @GetMapping("mypage")
+  public String mypage(HttpServletRequest httpServletRequest){
+    //세션이 있으면 해당 정보를 가져오고 없으면 세션생성 하지 않음
+    HttpSession session = httpServletRequest.getSession(false);
+    if(session != null){
+      session.invalidate();   //세션 제거
+    }
+    return "/member/mypage";
+  }
+
+  //아이디 찾기
+  @GetMapping("/findId")
+  public String findbyid() {
+    return "/member/findById";
+  }
+
+  @GetMapping("/findPw")
+  public String findbypw() {return "/member/findByPw";}
 }
