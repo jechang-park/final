@@ -8,22 +8,47 @@
 <body>
 <h1>회원정보수정</h1>
 
-<form th:object="${memberFix}" method="post" action="">
-
-    <label for="id">아이디</label>
-    <input type="text" id="id" name="id"/>
-<br>
-    <label for="nick">닉네임</label>
-    <input type="text" id="nick" name="nick"/>
+<form th:object="${memberFixForm}" method="post" action="">
+<div>
+    <label for="memberId">멤버번호 :</label>
+    <span th:text="${session.loginMember.memberId}"></span>
+</div>
     <br>
+    <div>
+    <label for="id">아이디 :</label>
+    <span th:text="${session.loginMember.id}"></span>
+    </div>
+    <br>
+    <div>
+    <label for="pw">비밀번호</label>
+    <input type="password" id="pw" name="pw" placeholder="수정할 비밀번호를 입력해주세요"/>
+    </div>
+    <br>
+    <div>
+    <label for="pw_check">비밀번호확인</label>
+    <input type="password" id="pw_check" name="pw_check" placeholder="수정한 비밀번호를 재확인해주세요"/>
+    </div>
+    <br>
+    <div>
+    <label for="nick">닉네임 :</label>
+    <span th:text="${session.loginMember.nick}"></span>
+    </div>
+    <br>
+    <div>
     <label for="email">이메일</label>
-    <input type="text" id="email" name="email"/>
+    <span th:text="${session.loginMember.email}"></span>
+    <input type="email" id="email" name="email" placeholder="수정할 이메일을 입력해주세요"/>
+    </div>
     <br>
-    <label for="gender">성별</label>
-    <input type="text" id="gender" name="gender"/>
+    <div>
+    <label for="gender">성별 :</label>
+    <span th:text="${session.loginMember.gender}"></span>
+    </div>
     <br>
-    <label for="age">나이</label>
-    <input type="text" id="age" name="age"/>
+    <div>
+    <label for="age">나이 :</label>
+    <span th:text="${session.loginMember.age}"></span>
+    </div>
     <br>
     <input type="submit" value="저장"/>
 </form>

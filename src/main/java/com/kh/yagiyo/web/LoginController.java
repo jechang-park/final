@@ -66,8 +66,11 @@ public class LoginController {
     LoginMember loginMember = new LoginMember(
           member.get().getMemberId(),
         member.get().getId(),
-        member.get().getEmail(),
+        member.get().getPw(),
           member.get().getNick(),
+        member.get().getEmail(),
+          member.get().getGender(),
+        member.get().getAge(),
           member.get().getGubun()  );
     session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
@@ -76,9 +79,9 @@ public class LoginController {
 
   //로그아웃
   @GetMapping("logout")
-  public String logout(HttpServletRequest httpServletRequest){
+  public String logout(HttpServletRequest HttpServletRequest){
     //세션이 있으면 해당 정보를 가져오고 없으면 세션생성 하지 않음
-    HttpSession session = httpServletRequest.getSession(false);
+    HttpSession session = HttpServletRequest.getSession(false);
     if(session != null){
       session.invalidate();   //세션 제거
     }
@@ -86,13 +89,8 @@ public class LoginController {
   }
 
   //마이페이지
-  @GetMapping("mypage")
-  public String mypage(HttpServletRequest httpServletRequest){
-    //세션이 있으면 해당 정보를 가져오고 없으면 세션생성 하지 않음
-    HttpSession session = httpServletRequest.getSession(false);
-    if(session != null){
-      session.invalidate();   //세션 제거
-    }
+  @GetMapping("/mypage")
+  public String mypage() {
     return "/member/mypage";
   }
 

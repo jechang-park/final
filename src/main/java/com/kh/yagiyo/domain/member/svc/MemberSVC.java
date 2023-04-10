@@ -10,13 +10,13 @@ public interface MemberSVC {
   Member save(Member member);
 
   //수정
-  void update(Long memberId, Member member);
+  void update(Long memberId,Member member);
 
   //조회 by mail
   Optional<Member> findByEmail(String email);
 
   //조회 by member_id
-  Optional<Member> findById(Long MemberId);
+  Optional<Object> findById(Long MemberId);
 
   //전체조회
   List<Member> findAll();

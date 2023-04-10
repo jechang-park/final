@@ -17,7 +17,7 @@ public class Member {
   private String age;
   private String gubun;
 
-  public Member(Long memberId, String id, String pw) {
+  public Member(Long memberId, String id, String pw, String email, String gender, String age, String gubun) {
     this.memberId = memberId;
     this.id = id;
     this.pw = pw;

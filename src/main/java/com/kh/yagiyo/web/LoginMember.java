@@ -11,7 +11,10 @@ import lombok.Data;
 public class LoginMember {
   private Long memberId;
   private String id;
+  private String pw;
   private String nick;
   private String email;
+  private String gender;
+  private String age;
   private String gubun;
 }

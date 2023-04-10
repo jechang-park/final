@@ -1,10 +1,17 @@
 package com.kh.yagiyo.web.form.member;
 
+import com.kh.yagiyo.domain.entity.Member;
 import lombok.Data;
 @Data
 public class MemberFixForm {
 
+        private Long memberId;
+
         private String id;
+
+        private String pw;
+
+        private String pw_check;
 
         private String nick;
 
@@ -14,4 +21,6 @@ public class MemberFixForm {
 
         private String age;
 
-    }
+        private String gubun;
+
+}

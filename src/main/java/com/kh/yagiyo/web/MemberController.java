@@ -2,7 +2,6 @@ package com.kh.yagiyo.web;
 
 import com.kh.yagiyo.domain.entity.Member;
 import com.kh.yagiyo.domain.member.svc.MemberSVC;
-import com.kh.yagiyo.web.form.login.LoginForm;
 import com.kh.yagiyo.web.form.member.JoinForm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -98,6 +97,7 @@ public class MemberController {
   String checkResult = memberSVC.emailCheck(email);
   return checkResult;
 }
+//아이디 중복체크
   @PostMapping("id-check")
   public @ResponseBody String idCheck(@RequestParam("id") String id){
     System.out.println("id = " + id);
@@ -105,6 +105,7 @@ public class MemberController {
     return checkResult;
 
   }
+  //닉네임 중복체크
   @PostMapping("nick-check")
   public @ResponseBody String nickCheck(@RequestParam("nick") String nick){
     System.out.println("nick = " + nick);

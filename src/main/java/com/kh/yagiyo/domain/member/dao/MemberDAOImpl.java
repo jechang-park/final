@@ -144,10 +144,10 @@ public class MemberDAOImpl implements MemberDAO {
   public List<Member> findAll() {
     StringBuffer sql = new StringBuffer();
 
-    sql.append("select member_id as memberId, ");
-    sql.append("       id ");
-    sql.append("       passwd, ");
-    sql.append("       nickname, ");
+    sql.append("select memberId, ");
+    sql.append("       id, ");
+    sql.append("       pw, ");
+    sql.append("       nick, ");
     sql.append("       email, ");
     sql.append("       gender, ");
     sql.append("       age ");

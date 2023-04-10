@@ -14,7 +14,7 @@ public interface MemberDAO {
 Member save(Member member);
 
   //수정
-  void update(Long MemberId, Member member);
+  void update(Long MemberId,Member member);
 
   //조회 by mail
   Optional<Member> findByEmail(String email);

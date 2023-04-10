@@ -2,10 +2,8 @@ package com.kh.yagiyo.domain.member.svc;
 
 import com.kh.yagiyo.domain.entity.Member;
 import com.kh.yagiyo.domain.member.dao.MemberDAO;
-import com.kh.yagiyo.domain.member.dao.MemberDAOImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +34,7 @@ public class MemberSVCImpl implements MemberSVC {
   }
 
   @Override
-  public Optional<Member> findById(Long MemberId) {
+  public Optional<Object> findById(Long MemberId) {
     return Optional.empty();
   }
 
