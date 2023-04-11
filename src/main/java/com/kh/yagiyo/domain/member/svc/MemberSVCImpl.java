@@ -24,13 +24,13 @@ public class MemberSVCImpl implements MemberSVC {
   }
 
   @Override
-  public void update(Long memberId, Member member) {
-
+  public void update(Member member) {
+   memberDAO.update(member);
   }
 
   @Override
   public Optional<Member> findByEmail(String email) {
-    return Optional.empty();
+    {return memberDAO.findByEmail(email);}
   }
 
   @Override
@@ -44,8 +44,8 @@ public class MemberSVCImpl implements MemberSVC {
   }
 
   @Override
-  public void delete(String email) {
-
+  public void delete(Long memberId) {
+    memberDAO.delete(memberId);
   }
 
   @Override
@@ -94,6 +94,15 @@ public class MemberSVCImpl implements MemberSVC {
   }else{
     }
     return "ok";
+  }
+  @Override
+  public boolean isExistByEmailAndNickname(String email, String nick) {
+    return memberDAO.isExistByEmailAndNickname(email, nick);
+  }
+
+  @Override
+  public void changePasswd(String email, String pw) {
+    memberDAO.changePasswd(email,pw);
   }
 }
 

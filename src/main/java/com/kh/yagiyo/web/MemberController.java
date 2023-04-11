@@ -1,7 +1,10 @@
 package com.kh.yagiyo.web;
 
+import com.kh.yagiyo.domain.common.mail.MailService;
+import com.kh.yagiyo.domain.common.util.PasswordGenerator;
 import com.kh.yagiyo.domain.entity.Member;
 import com.kh.yagiyo.domain.member.svc.MemberSVC;
+import com.kh.yagiyo.web.form.member.FindPWForm;
 import com.kh.yagiyo.web.form.member.JoinForm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -12,9 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -22,6 +22,8 @@ import java.util.Map;
 public class MemberController {
 
   private final MemberSVC memberSVC;
+
+
 
   @GetMapping("/Agree")
   public String agree() {
@@ -103,18 +105,15 @@ public class MemberController {
     System.out.println("id = " + id);
     String checkResult = memberSVC.idCheck(id);
     return checkResult;
-
   }
+
   //닉네임 중복체크
   @PostMapping("nick-check")
   public @ResponseBody String nickCheck(@RequestParam("nick") String nick){
     System.out.println("nick = " + nick);
     String checkResult = memberSVC.nickCheck(nick);
     return checkResult;
-
   }
-
-
   }
 
 

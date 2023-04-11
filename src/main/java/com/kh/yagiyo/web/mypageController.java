@@ -3,6 +3,7 @@ package com.kh.yagiyo.web;
 import com.kh.yagiyo.domain.entity.Member;
 import com.kh.yagiyo.domain.member.svc.MemberSVC;
 import com.kh.yagiyo.web.form.member.MemberFixForm;
+import com.kh.yagiyo.web.form.member.MemberDeleteForm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -21,11 +21,27 @@ import java.util.Optional;
 public class mypageController {
 
     private final MemberSVC memberSVC;
-    //회원정보 삭제화면 불러오기
 
-    @GetMapping("/delete")
-    public String memberDelete() {
+
+    @GetMapping("/{memberId}/delete")
+    public String deleteForm(@PathVariable("memberId") Long memberId, HttpSession session, Model model) {
+        LoginMember loginMember = (LoginMember) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        Optional<Object> member = memberSVC.findById(loginMember.getMemberId());
+
+        model.addAttribute("member", member);
         return "/member/memberDelete";
+    }
+    @PostMapping("/{memberId}/delete")
+    public String memberDelete(@PathVariable("memberId") Long memberId, @ModelAttribute MemberDeleteForm memberDeleteForm, HttpSession session) {
+        log.info("memberDeleteForm={}",memberDeleteForm);
+        LoginMember loginMember = (LoginMember) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        memberSVC.delete(loginMember.getMemberId());
+
+        // 삭제된 회원이 현재 로그인한 회원이면 로그아웃 처리
+        if (loginMember.getMemberId().equals(memberId)) {
+            session.invalidate();
+        }
+        return "redirect:/";
     }
 
 @GetMapping("/{memberId}/fix")
@@ -47,12 +63,17 @@ public String memberInformation(Model model,HttpServletRequest request) {
 }
     @PostMapping("/{memberId}/fix")
     public String memberFix(@PathVariable Long memberId, @ModelAttribute MemberFixForm memberFixForm, HttpSession session) {
+
+        log.info("memberFixForm={}",memberFixForm);
+
         // 현재 로그인한 회원의 정보를 세션에서 가져옴
         LoginMember loginMember = (LoginMember) session.getAttribute(SessionConst.LOGIN_MEMBER);
 
         // 입력된 수정 정보를 바탕으로 회원 정보 수정
         Member member = new Member(
-            memberFixForm.getMemberId(),
+
+            loginMember.getMemberId(), // 로그인멤버에서 멤버아이디값을 불러옴
+            memberFixForm.getId(),
             memberFixForm.getPw(),
             memberFixForm.getNick(),
             memberFixForm.getEmail(),
@@ -60,7 +81,7 @@ public String memberInformation(Model model,HttpServletRequest request) {
             memberFixForm.getAge(),
             memberFixForm.getGubun()
         );
-        memberSVC.update(memberId, member);
+        memberSVC.update(member);
 
         // 수정된 회원 정보를 다시 세션에 저장
         LoginMember updatedLoginMember = new LoginMember(
@@ -76,6 +97,7 @@ public String memberInformation(Model model,HttpServletRequest request) {
         session.setAttribute(SessionConst.LOGIN_MEMBER, updatedLoginMember);
 
         // 수정 완료 후 홈 화면으로 리다이렉트
+
         return "redirect:/";
     }
 }

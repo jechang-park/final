@@ -61,21 +61,23 @@ public class MemberDAOImpl implements MemberDAO {
   }
 
   @Override
-  public void update(Long memberId, Member member) {
+  public void update(Member member) {
+    log.info("member", member);
+
     StringBuffer sql = new StringBuffer();
     sql.append("update member ");
-    sql.append("   set id = ?, ");
-    sql.append("   set nick = ?, ");
-    sql.append(" where memberid = ? ");
-    sql.append(" where email = ? ");
+    sql.append("   set id = :id, ");
+    sql.append("       pw = :pw, ");
+    sql.append("       nick = :nick, ");
+    sql.append("       email = :email ");
+    sql.append(" where memberid = :memberId ");
 
     SqlParameterSource param = new MapSqlParameterSource()
         .addValue("id", member.getId())
+        .addValue("pw", member.getPw())
         .addValue("nick", member.getNick())
-        .addValue("gender", member.getGender())
-        .addValue("age", member.getAge())
-        .addValue("memberid", memberId)
-        .addValue("email", member.getEmail());
+        .addValue("email", member.getEmail())
+        .addValue("memberId", member.getMemberId());
 
     template.update(sql.toString(), param);
   }
@@ -163,15 +165,15 @@ public class MemberDAOImpl implements MemberDAO {
   }
 
   /**
-   * @param email
+   * @param memberId
    */
   @Override
-  public void delete(String email) {
+  public void delete(Long memberId) {
     StringBuffer sql = new StringBuffer();
-    sql.append("delete from member ");
-    sql.append(" where email = :email ");
+    sql.append(" delete from member ");
+    sql.append(" where memberid = :memberid ");
 
-    Map<String, String> param = Map.of("email", email);
+    Map<String, Long> param = Map.of("memberid", memberId);
     template.update(sql.toString(), param);
   }
 
@@ -264,5 +266,35 @@ public class MemberDAOImpl implements MemberDAO {
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
+  }
+//  이메일 닉네임 존재확인
+  @Override
+  public boolean isExistByEmailAndNickname(String email, String nick) {
+    boolean isExist = false;
+
+    StringBuffer sql = new StringBuffer();
+    sql.append("select count(*) ");
+    sql.append("  from member ");
+    sql.append(" where email = :email ");
+    sql.append("   and nick = :nick ");
+
+    Map<String, String> param = Map.of("email",email,"nick",nick);
+
+    Integer integer = template.queryForObject(sql.toString(), param, Integer.class);
+    if (integer == 1) isExist = true;
+
+    return isExist;
+  }
+
+  //비밀번호변경
+  @Override
+  public void changePasswd(String email, String pw) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("update member ");
+    sql.append("   set pw = :pw ");
+    sql.append(" where email = :email ");
+
+    Map<String, String> param = Map.of("email",email,"pw",pw);
+    template.update(sql.toString(),param);
   }
 }

@@ -14,7 +14,7 @@ public interface MemberDAO {
 Member save(Member member);
 
   //수정
-  void update(Long MemberId,Member member);
+  void update(Member member);
 
   //조회 by mail
   Optional<Member> findByEmail(String email);
@@ -26,7 +26,7 @@ Member save(Member member);
   List<Member> findAll();
 
   //탈퇴
-  void delete(String email);
+  void delete(Long memberId);
 
   //회원유무
   boolean isExist(String id);
@@ -37,6 +37,13 @@ Member save(Member member);
   //아이디찾기
   Optional<String> findEmailByNickname(String nick);
 
+  //닉네임 찾기
   Optional<Member> findByNick(String nick);
+
+  //비밀번호찾기
+  boolean isExistByEmailAndNickname(String email, String nick);
+
+  //비밀번호변경
+  void changePasswd(String email, String pw);
 
 }

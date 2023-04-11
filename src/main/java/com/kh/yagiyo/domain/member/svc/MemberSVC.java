@@ -10,7 +10,7 @@ public interface MemberSVC {
   Member save(Member member);
 
   //수정
-  void update(Long memberId,Member member);
+  void update(Member member);
 
   //조회 by mail
   Optional<Member> findByEmail(String email);
@@ -22,7 +22,7 @@ public interface MemberSVC {
   List<Member> findAll();
 
   //탈퇴
-  void delete(String email);
+  void delete(Long memberId);
 
   //회원유무
   boolean isExist(String id);
@@ -38,5 +38,9 @@ public interface MemberSVC {
   String idCheck(String id);
 
   String nickCheck(String nick);
+
+  boolean isExistByEmailAndNickname(String email, String nick);
+
+  void changePasswd(String email, String pw);
 
 }
