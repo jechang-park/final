@@ -1,5 +1,6 @@
 package com.kh.yagiyo.web.form.board;
 
+import com.kh.yagiyo.domain.entity.Board;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +20,17 @@ public class BoardForm {
   private int boardHits;
   private LocalDateTime boardCreatedTime;
   private LocalDateTime boardUpdatedTime;
+
+  public static BoardForm toBoardForm(Board board){
+  BoardForm boardForm = new BoardForm();
+  boardForm.setId(board.getBOARD_ID());
+  boardForm.setBoardWriter(board.getBOARD_WRITER());
+  boardForm.setBoardPass(board.getBOARD_PASS());
+  boardForm.setBoardTitle(board.getBOARD_TITLE());
+  boardForm.setBoardContents(board.getBOARD_CONTENTS());
+  boardForm.setBoardHits(board.getBOARD_HITS());
+  boardForm.setBoardCreatedTime(board.getCREATE_TIME());
+  boardForm.setBoardUpdatedTime(board.getUPDATE_TIME());
+  return boardForm;
+  }
 }
