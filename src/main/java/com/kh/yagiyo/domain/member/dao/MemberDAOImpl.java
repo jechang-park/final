@@ -226,20 +226,20 @@ public class MemberDAOImpl implements MemberDAO {
    * @return
    */
   @Override
-  public Optional<String> findEmailByNickname(String nick) {
+  public Optional<String> findEmailById(String email) {
     StringBuffer sql = new StringBuffer();
-    sql.append("select email ");
+    sql.append("select id ");
     sql.append("  from member ");
-    sql.append(" where nick = :nick ");
+    sql.append(" where email = :email ");
 
-    Map<String, String> param = Map.of("nick", nick);
+    Map<String, String> param = Map.of("email", email);
     List<String> result = template.query(
         sql.toString(),
         param,
-        (rs, rowNum) -> rs.getNString("email")
+        (rs, rowNum) -> rs.getNString("id")
     );
 
-    return (result.size() == 1) ? Optional.of(result.get(0)) : Optional.empty();
+    return (result.size() == 1) ? Optional.of((String)result.get(0)) : Optional.empty();
   }
 
   @Override
@@ -269,16 +269,16 @@ public class MemberDAOImpl implements MemberDAO {
   }
 //  이메일 닉네임 존재확인
   @Override
-  public boolean isExistByEmailAndNickname(String email, String nick) {
+  public boolean isExistByEmailAndId(String email, String id) {
     boolean isExist = false;
 
     StringBuffer sql = new StringBuffer();
     sql.append("select count(*) ");
     sql.append("  from member ");
     sql.append(" where email = :email ");
-    sql.append("   and nick = :nick ");
+    sql.append("   and id = :id ");
 
-    Map<String, String> param = Map.of("email",email,"nick",nick);
+    Map<String, String> param = Map.of("email",email,"id",id);
 
     Integer integer = template.queryForObject(sql.toString(), param, Integer.class);
     if (integer == 1) isExist = true;

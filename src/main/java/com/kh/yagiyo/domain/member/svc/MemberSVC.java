@@ -31,7 +31,7 @@ public interface MemberSVC {
   Optional<Member> login(String id, String pw);
 
   //아이디찾기
-  Optional<String> findEmailByNickname(String nick);
+  Optional<String> findEmailById(String email);
 
   String emailCheck(String email);
 
@@ -39,7 +39,7 @@ public interface MemberSVC {
 
   String nickCheck(String nick);
 
-  boolean isExistByEmailAndNickname(String email, String nick);
+  boolean isExistByEmailAndId(String email, String id);
 
   void changePasswd(String email, String pw);
 

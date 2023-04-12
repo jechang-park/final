@@ -59,8 +59,8 @@ public class MemberSVCImpl implements MemberSVC {
   }
 
   @Override
-  public Optional<String> findEmailByNickname(String nick) {
-    return Optional.empty();
+  public Optional<String> findEmailById(String email) {
+    return memberDAO.findEmailById(email);
   }
 
   @Override
@@ -96,8 +96,8 @@ public class MemberSVCImpl implements MemberSVC {
     return "ok";
   }
   @Override
-  public boolean isExistByEmailAndNickname(String email, String nick) {
-    return memberDAO.isExistByEmailAndNickname(email, nick);
+  public boolean isExistByEmailAndId(String email, String id) {
+    return memberDAO.isExistByEmailAndId(email, id);
   }
 
   @Override

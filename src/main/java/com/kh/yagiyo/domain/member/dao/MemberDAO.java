@@ -34,14 +34,14 @@ Member save(Member member);
   //로그인
   Optional<Member> login(String id, String pw);
 
-  //아이디찾기
-  Optional<String> findEmailByNickname(String nick);
+  //이메일로아이디찾기
+  Optional<String> findEmailById(String email);
 
   //닉네임 찾기
   Optional<Member> findByNick(String nick);
 
   //비밀번호찾기
-  boolean isExistByEmailAndNickname(String email, String nick);
+  boolean isExistByEmailAndId(String email, String id);
 
   //비밀번호변경
   void changePasswd(String email, String pw);

@@ -5,6 +5,7 @@ import com.kh.yagiyo.domain.common.util.PasswordGenerator;
 import com.kh.yagiyo.domain.entity.Member;
 import com.kh.yagiyo.domain.member.svc.MemberSVC;
 import com.kh.yagiyo.web.form.login.LoginForm;
+import com.kh.yagiyo.web.form.member.FindIdForm;
 import com.kh.yagiyo.web.form.member.FindPWForm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -101,9 +103,33 @@ public class LoginController {
 
   //아이디 찾기
   @GetMapping("/findId")
-  public String findbyid() {
-    return "/member/findId";
+  public String findIdForm(Model model) {
+    model.addAttribute("findIdForm", new FindIdForm());
+    return "member/findId";
   }
+
+  @PostMapping("/findId")
+  public String findId(
+      @Valid @ModelAttribute FindIdForm findIdForm,
+      BindingResult bindingResult,
+      Model model) {
+    if (bindingResult.hasErrors()) {
+      return "member/findId";
+    }
+    String email = findIdForm.getEmail();
+    Optional<String> optionalMember = memberSVC.findEmailById(email);
+    if (optionalMember.isPresent()) {
+      String id = optionalMember.get();
+      FindIdForm result = new FindIdForm();
+      result.setId(id);
+      model.addAttribute("findIdForm", result);
+    } else {
+      model.addAttribute("message", "해당 이메일과 연결된 회원 정보를 찾을 수 없습니다.");
+    }
+    return "member/findId";
+  }
+
+
 
   //이메일 인증해서 비밀번호 찾기
   @GetMapping("/findPW")
@@ -125,7 +151,7 @@ public class LoginController {
     }
 
     //1) email,nickname 인 회원 찾기
-    boolean isExist = memberSVC.isExistByEmailAndNickname(findPWForm.getEmail(), findPWForm.getNick());
+    boolean isExist = memberSVC.isExistByEmailAndId(findPWForm.getEmail(), findPWForm.getId());
     if(!isExist){
 
       return "member/findPW";

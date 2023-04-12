@@ -1,17 +1,11 @@
 package com.kh.yagiyo.web.form.member;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
 @Data
-public class FindPWForm {
-
-  @NotBlank
+public class FindIdForm {
   @Email
   private String email;
 
-  @NotBlank
   private String id;
-
 }
