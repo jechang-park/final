@@ -1,8 +1,10 @@
 package com.kh.yagiyo.web;
 
 
+import com.kh.yagiyo.domain.board.svc.CommentSVC;
 import com.kh.yagiyo.domain.board.svc.boardSVC;
 import com.kh.yagiyo.web.form.board.BoardForm;
+import com.kh.yagiyo.web.form.board.CommentDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import java.util.List;
 @RequestMapping("/board")
 public class BoardController {
 private final boardSVC boardSVC;
+private final CommentSVC commentSVC;
   @GetMapping("")
   public String boardForm(){
     return "/board/board";
@@ -49,6 +52,8 @@ private final boardSVC boardSVC;
 //    게시글 데이터를 가져와서 detail.html에 출력
     boardSVC.updateHits(id);
     BoardForm boardForm = boardSVC.findById(id);
+    List<CommentDTO> commentDTOList = commentSVC.findAll(id);
+    model.addAttribute("commentList" ,commentDTOList );
     model.addAttribute("board", boardForm);
     model.addAttribute("page", pageable.getPageNumber());
     return "/board/boardDetail";

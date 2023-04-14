@@ -44,6 +44,10 @@ public class Board extends Base{
   @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE,orphanRemoval = true,fetch = FetchType.LAZY)
   private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();
 
+  @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE,orphanRemoval = true,fetch = FetchType.LAZY)
+  private List<CommentEntity> commentEntityList = new ArrayList<>();
+
+
   public static Board toSaveEntity(BoardForm boardForm){
     Board board = new Board();
     board.setBOARD_WRITER(boardForm.getBoardWriter());
