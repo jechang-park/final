@@ -33,6 +33,10 @@ public class YagiyoConfig implements WebMvcConfigurer {
             "/board", //게시판
             "/board/list", //게시판 목록
             "/board/paging", //게시판 페이징
+                "/members/nick-check", // 닉네임체크
+                "/members/id-check", // 아이디체크
+                "/members/email-check", // 이메일체크
+                "/comment/save",        // 댓글 저장
 //            "/board/{id}",
             "/css/*",
             "/js/*",

@@ -12,7 +12,8 @@
 <hr>
 
 <form action="/board/save" method="post" enctype="multipart/form-data">
-  writer: <input type="text" name="boardWriter"><br>
+<!-- <input type="hidden" name="boardWriter"><br>-->
+  writer: <input type="text"  name="boardWriter" th:value="${session.loginMember.nick}" readonly><br>
   pass: <input type="text" name="boardPass"><br>
   title: <input type="text" name="boardTitle"><br>
   contents: <textarea name="boardContents" cols="30" rows="10"></textarea><br>

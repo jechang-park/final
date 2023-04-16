@@ -12,7 +12,7 @@
   title: <input type="text" name="boardTitle" th:value="${board.boardTitle}"> <br>
   contents: <textarea name="boardContents" cols="30" rows="10" th:text="${board.boardContents}"></textarea> <br>
   <input type="hidden" name="boardHits" th:value="${board.boardHits}">
-  <input type="button" value="글수정" onclick="boardUpdate()">
+  <input type="button" value="글수정" onclick="boardUpdate()" id="btn_update">
 </form>
 <script th:inline="javascript">
   const boardUpdate = () => {
