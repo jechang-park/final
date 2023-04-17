@@ -1,10 +1,8 @@
 package com.kh.yagiyo.web;
 
-import com.kh.yagiyo.domain.common.mail.MailService;
-import com.kh.yagiyo.domain.common.util.PasswordGenerator;
 import com.kh.yagiyo.domain.entity.Member;
 import com.kh.yagiyo.domain.member.svc.MemberSVC;
-import com.kh.yagiyo.web.form.member.FindPWForm;
+import com.kh.yagiyo.domain.member.svc.RegisterMail;
 import com.kh.yagiyo.web.form.member.JoinForm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
   private final MemberSVC memberSVC;
+  private final RegisterMail registerMail;
 
 
 
@@ -40,6 +39,15 @@ public class MemberController {
   public String joinForm(Model model) {
     model.addAttribute("joinForm", new JoinForm());
     return "/member/joinForm";
+  }
+  //이메일 인증
+  @PostMapping("mailConfirm")
+  @ResponseBody
+  String mailConfirm(@RequestParam("email") String email) throws Exception {
+
+    String code = registerMail.sendSimpleMessage(email);
+    System.out.println("인증코드 : " + code);
+    return code;
   }
 
   // 아이디 중복 체크
@@ -114,6 +122,7 @@ public class MemberController {
     String checkResult = memberSVC.nickCheck(nick);
     return checkResult;
   }
+
   }
 
 
