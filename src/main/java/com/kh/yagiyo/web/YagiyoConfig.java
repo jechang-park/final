@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
+//@Configuration
 public class YagiyoConfig implements WebMvcConfigurer {
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
@@ -37,6 +37,7 @@ public class YagiyoConfig implements WebMvcConfigurer {
                 "/members/id-check", // 아이디체크
                 "/members/email-check", // 이메일체크
                 "/comment/save",        // 댓글 저장
+            "/members/mailConfirm",    // 이메일 인증
 //            "/board/{id}",
             "/css/*",
             "/js/*",
