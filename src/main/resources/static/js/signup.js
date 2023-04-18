@@ -24,6 +24,8 @@ const $checkboxAgree = document.getElementById('checkboxAgree');
 const $timeLimit = document.getElementById('timeLimit');
 const $completion = document.getElementById('completion');
 const $agreeUrl = document.getElementById('agreeUrl');
+const $mailError = document.getElementById('mailError');
+const $memailconfirm = document.querySelector('#memailconfirm');
 
 //비밀번호 일치여부 확인
 
@@ -167,12 +169,9 @@ function CheckInputs() {
 
   if (
     $pwChkError.innerHTML === 'Success' &&
-    $pwError.innerHTML === 'Success' &&
+    $mailError.innerHTML === 'Success' &&
     $idError.innerHTML === 'Success' &&
-    $nickError.innerHTML === 'Success' &&
-    $emailError.innerHTML === 'Success' &&
-    ((emailCheck.includes('@') && emailCheck.includes('.com')) ||
-      emailCheck.includes('.net'))
+    $nickError.innerHTML === 'Success'
   ) {
     $man.disabled = false;
     $women.disabled = false;
@@ -210,9 +209,9 @@ function AllCheckInputs() {
   $email.addEventListener('input', CheckInputs);
   $checkboxIdentity.addEventListener('change', CheckInputs);
   $checkboxAgree.addEventListener('change', CheckInputs);
+  $memailconfirm.addEventListener('input', CheckInputs);
 }
 
-AllCheckInputs();
 
 // 인증코드받기 버튼 클릭시 타이머 동작,타이머 히든요소 false 로 변경
 
@@ -252,7 +251,7 @@ function updateTimer() {
 //서비스 이용약관 창으로 뛰우기,일단 클릭시 체크박스 완료되게 설정
 
 $agreeUrl.addEventListener('click', () => {
-  const url = 'http://localhost:9081/members/Agree';
+  const url = 'http://localhost:9080/members/Agree';
   const name = 'areeeUrl';
   window.open(url, name, 'width=800,height=800,left=600');
   //클릭시 체크박스 완료되게 설정 (임시)
@@ -260,7 +259,7 @@ $agreeUrl.addEventListener('click', () => {
 });
 const $identityUrl = document.getElementById('identityUrl');
 $identityUrl.addEventListener('click', () => {
-  const url = 'http://localhost:9081/members/Identity';
+  const url = 'http://localhost:9080/members/Identity';
   const name = 'identityUrl';
   window.open(url, name, 'width=800,height=800,left=600');
   $checkboxIdentity.checked = true;
@@ -307,6 +306,7 @@ $pw_check.addEventListener('input', function () {
 
   const emailCheck = () => {
     const inputValue = $email.value.trim();
+    const email = document.getElementById('email');
     const emailError = document.getElementById("emailError");
     const regex = /[^A-Za-z0-9@. ]+/g;
 
@@ -315,53 +315,32 @@ $pw_check.addEventListener('input', function () {
       emailError.innerHTML = '잘못된 입력입니다.';
       return;
     }
+
     $.ajax({
       type: "post",
       url: "/members/email-check",
-      data: { "email": inputValue },
+      data: { "email": email.value },
       success: function(res) {
-        if (res !== "ok") {
-          emailError.style.color = 'red';
-          emailError.innerHTML = "이미 사용중인 이메일 입니다.";
+        if (res == "ok"&&
+        (inputValue.includes('@') && inputValue.includes('.com') ||
+                    inputValue.includes('.net'))){
 
-          }else if (res == "ok"&&
-          (inputValue.includes('@') && inputValue.includes('.com')) ||
-           inputValue.includes('.net')){
           emailError.style.color = 'green';
           emailError.innerHTML = 'Success';
           $codeBtn.disabled = false;
-          }else{
+          AllCheckInputs();
+        } else if(res !== "ok") {
+          emailError.style.color = 'red';
+          emailError.innerHTML = '중복된 이메일이 있습니다.';
           $codeBtn.disabled = true;
-
-        }if (res == "ok" &&
-         $pwChkError.innerHTML === 'Success' &&
-            $pwError.innerHTML === 'Success' &&
-            $idError.innerHTML === 'Success' &&
-            $nickError.innerHTML === 'Success' &&
-          (inputValue.includes('@') && inputValue.includes('.com') ||
-          inputValue.includes('.net')))
-         {
-              $man.disabled = false;
-              $women.disabled = false;
-              $age.disabled = false;
-              $checkboxIdentity.disabled = false;
-              $checkboxAgree.disabled = false;
-          } else {
-          emailError.innerHTML = '';
-          $codeBtn.disabled = true;
-          $man.disabled = true;
-          $women.disabled = true;
-          $age.disabled = true;
-          $checkboxIdentity.disabled = true;
-          $checkboxAgree.disabled = true;
+        } else{
+        emailError.innerHTML = '';
         }
-      },
-      error: function(err) {
-        console.log("에러발생",err);
-      }
-    });
-  };
-  $email.addEventListener('input', emailCheck);
+        }
+        });
+      };
+
+  email.addEventListener('input', emailCheck);
 
 const idCheck = () => {
   const id = document.getElementById('id');
@@ -434,28 +413,20 @@ $('#codeBtn').click(function() {
 });
 
 function chkEmailConfirm(data) {
-  const $memailconfirm = $('#memailconfirm');
-  const $memailconfirmTxt = $('#memailconfirmTxt');
-  $memailconfirm.on('input', function() {
-    console.log("$memailconfirm : " + $memailconfirm.val());
-    if (data !== $memailconfirm.val()) {
-    console.log(data);
-      $memailconfirmTxt.html("<span id='emconfirmchk'>인증번호가 잘못되었습니다.</span>").find("#emconfirmchk").css({
-        "color": "#FA3E3E",
-        "font-weight": "bold",
-        "font-size": "10px"
-      });[]
-    } else {
-      $memailconfirmTxt.html("<span id='emconfirmchk'>인증확인에 성공하셨습니다.</span>").find("#emconfirmchk").css({
-        "color": "#0D6EFD",
-        "font-weight": "bold",
-        "font-size": "10px"
-      });
-    }
-  });
+const memailconfirm = document.querySelector('#memailconfirm');
+const $mailError = document.querySelector('#mailError');
+memailconfirm.addEventListener('input', function() {
+console.log("memailconfirm : " + memailconfirm.value);
+if (data !== memailconfirm.value) {
+console.log(data);
+$mailError.style.color = 'red';
+$mailError.innerHTML = '인증번호가 잘못되었습니다';
+} else {
+$mailError.style.color = 'green';
+$mailError.innerHTML = 'Success';
 }
-
-
+});
+}
 
 
 

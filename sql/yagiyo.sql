@@ -42,51 +42,74 @@
 --
 --commit;
 
-
-//게시판 테이블
-DROP TABLE board;
-
-create table board
-(
-ID   NUMBER NUMBER GENERATED ALWAYS AS IDENTITY primary key,
-BOARD_WRITER   VARCHAR2(20 BYTE),
-BOARD_PASS   VARCHAR2(255 BYTE),
-BOARD_TITLE   VARCHAR2(255 BYTE),
-BOARD_CONTENTS   VARCHAR2(500 BYTE),
-BOARD_HITS   NUMBER(9,0),
-CREATE_TIME   TIMESTAMP(6),
-UPDATE_TIME   TIMESTAMP(6),
-FILEATTACHED   NUMBER(9,0)
-);
+DROP TABLE member;
 
 DROP TABLE board_file_table;
+
+DROP TABLE comment_table;
+
+DROP TABLE board;
+
+DROP SEQUENCE memberid_seq;
+
+DROP SEQUENCE id_seq;
+
+CREATE SEQUENCE MEMBERID_SEQ;
+
+CREATE SEQUENCE ID_seq;
+
+CREATE TABLE member
+
+(
+  memberid NUMBER primary key,
+  id       VARCHAR2(20 BYTE),
+  pw       VARCHAR2(40 BYTE),
+  nick     VARCHAR2(40 BYTE),
+  email    VARCHAR2(50 BYTE),
+  gender   VARCHAR2(20 BYTE),
+  age      VARCHAR2(20 BYTE),
+  gubun    VARCHAR2(20 BYTE)
+);
+
+CREATE TABLE board
+(
+  ID              NUMBER primary key,
+  BOARD_WRITER    VARCHAR2(20 BYTE),
+  BOARD_PASS      VARCHAR2(255 BYTE),
+  BOARD_TITLE     VARCHAR2(255 BYTE),
+  BOARD_CONTENTS  VARCHAR2(500 BYTE),
+  BOARD_HITS      NUMBER(9,0),
+  CREATE_TIME     TIMESTAMP(6),
+  UPDATE_TIME     TIMESTAMP(6),
+  FILEATTACHED    NUMBER(9,0)
+);
+
+
 
 CREATE TABLE board_file_table
 (
   id                  NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  create_time        DATE,
-  update_time        DATE,
-  original_filename  VARCHAR2(255),
-  stored_filename    VARCHAR2(255),
+  create_time         TIMESTAMP(6),
+  update_time         TIMESTAMP(6),
+  original_filename   VARCHAR2(255),
+  stored_filename     VARCHAR2(255),
   board_id            NUMBER,
-  CONSTRAINT Board_File_Table_Foreign_Key
+   CONSTRAINT Board_File_Table_Foreign_Key
     FOREIGN KEY (board_id) REFERENCES board (id) ON DELETE CASCADE
 );
-//데이터베이스 테이블
 
-DROP TABLE comment_table;
 
 CREATE TABLE comment_table
 (
   id                  NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  create_time        DATE,
-  update_time        DATE,
-  comment_Writer  VARCHAR2(20),
+  create_time         TIMESTAMP(6),
+  update_time         TIMESTAMP(6),
+  comment_Writer      VARCHAR2(20),
   comment_Contents    VARCHAR2(255),
   board_id            NUMBER,
   CONSTRAINT comment_table_Foreign_Key
     FOREIGN KEY (board_id) REFERENCES board (id) ON DELETE CASCADE
 );
-commit;
 
-//댓글 테이블
+COMMIT;
+
