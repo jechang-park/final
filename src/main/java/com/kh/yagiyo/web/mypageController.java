@@ -98,6 +98,6 @@ public String memberInformation(Model model,HttpServletRequest request) {
 
         // 수정 완료 후 홈 화면으로 리다이렉트
 
-        return "redirect:/";
+        return "redirect:/mypage/{memberId}/fix";
     }
 }

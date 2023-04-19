@@ -10,7 +10,7 @@
   width: minmax(100%, 1280px);
   height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 8fr 1fr;
   grid-template-rows: 100px 1fr 100px;
   grid-template-areas:
     'top top top'
@@ -34,4 +34,22 @@
   display: grid;
   grid-area: bottom;
   justify-content: center;
+}
+.section {
+  border: 1px solid black;
+  outline: none;
+  padding: 10px;
+}
+.btn{
+border: none;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+width:650px;
+height:60px;
+}
+.btn:hover{
+  color: white;
+  background-color: #87CEFA;
 }

@@ -171,14 +171,14 @@
           </a>
           <div class="timer">
             <div hidden id="timeLimit">03:00</div>
-            <button hidden disabled id="completion">인증완료</button>
+            <button hidden disabled id="completion"></button>
           </div>
         </div>
 
-        <label for="gender" class="container_contents_item"
-        >성별 (선택)</label
-        >
-        <form action="gender" id="gender">
+<!--        <label for="gender" class="container_contents_item"-->
+<!--        >성별 (선택)</label-->
+<!--        >-->
+          <label for="man" class="container_contents_item" name="gender" value="남자" >'남'</label>
           <input
               disabled
               type="radio"
@@ -187,8 +187,9 @@
               unchecked=""
               value="man"
               id="man"
+              th:field="*{gender}"
           />
-          <label for="man" class="container_contents_item">'남'</label>
+          <label for="women" class="container_contents_item">'여'</label>
           <input
               disabled
               type="radio"
@@ -196,9 +197,8 @@
               name="gender"
               value="women"
               id="women"
+              th:field="*{gender}"
           />
-          <label for="women" class="container_contents_item">'여'</label>
-        </form>
         <label for="age" class="container_contents_item">나이 (선택)</label>
         <input
             disabled
@@ -210,9 +210,9 @@
         />
       </div>
       <div>
-        <input id="checkboxAgree" disabled type="checkbox" />
+        <input id="checkboxAgree" hidden="true" disabled type="checkbox" />
         <span class="container_contents_agree"
-        ><a
+        ><a hidden="true"
             id="agreeUrl"
             target="agreeUrl"
             th:href="@{/members/Agree}">
@@ -222,10 +222,11 @@
       </div>
       <br />
       <div>
-        <input id="checkboxIdentity" disabled type="checkbox" />
+        <input id="checkboxIdentity" hidden="true" disabled type="checkbox" />
 
         <span class="container_contents_identity"
         ><a
+            hidden="true"
             id="identityUrl"
             target="identityUrl"
             th:href="@{/members/Identity}">

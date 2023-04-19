@@ -169,15 +169,20 @@ function CheckInputs() {
 
   if (
     $pwChkError.innerHTML === 'Success' &&
-    $mailError.innerHTML === 'Success' &&
     $idError.innerHTML === 'Success' &&
-    $nickError.innerHTML === 'Success'
+    $nickError.innerHTML === 'Success'&&
+    $mailError.innerHTML === 'Success'
   ) {
     $man.disabled = false;
     $women.disabled = false;
     $age.disabled = false;
     $checkboxIdentity.disabled = false;
+    $checkboxIdentity.hidden = false;
     $checkboxAgree.disabled = false;
+    $checkboxAgree.hidden = false;
+    $timeLimit.hidden = true;
+    identityUrl.hidden = false;
+    agreeUrl.hidden = false;
   } else {
     $man.disabled = true;
     $women.disabled = true;
@@ -210,6 +215,7 @@ function AllCheckInputs() {
   $checkboxIdentity.addEventListener('change', CheckInputs);
   $checkboxAgree.addEventListener('change', CheckInputs);
   $memailconfirm.addEventListener('input', CheckInputs);
+  $memailconfirm.addEventListener('keyup', CheckInputs);
 }
 
 
@@ -225,7 +231,7 @@ function startTimer() {
   }
   minutes = 3;
   seconds = 0;
-  $completion.textContent = '인증완료';
+  $completion.textContent = '';
   updateTimer();
   timer = setInterval(updateTimer, 1000);
   $timeLimit.hidden = false;
@@ -237,7 +243,7 @@ function updateTimer() {
   if (seconds === 0) {
     if (minutes === 0) {
       clearInterval(timer);
-      $completion.textContent = '시간초과';
+      $completion.textContent = '';
       $completion.disabled = true;
     } else {
       minutes--;
@@ -254,15 +260,21 @@ $agreeUrl.addEventListener('click', () => {
   const url = 'http://localhost:9080/members/Agree';
   const name = 'areeeUrl';
   window.open(url, name, 'width=800,height=800,left=600');
-  //클릭시 체크박스 완료되게 설정 (임시)
-  $checkboxAgree.checked = true;
+  setTimeout(() => {
+    $checkboxAgree.checked = true;
+    CheckInputs();
+  }, 1000); // 1초(1000ms) 딜레이 적용
 });
+
 const $identityUrl = document.getElementById('identityUrl');
 $identityUrl.addEventListener('click', () => {
   const url = 'http://localhost:9080/members/Identity';
   const name = 'identityUrl';
   window.open(url, name, 'width=800,height=800,left=600');
-  $checkboxIdentity.checked = true;
+  setTimeout(() => {
+    $checkboxIdentity.checked = true;
+    CheckInputs();
+  }, 1000); // 1초(1000ms) 후에 실행
 });
 
 //아이디 허용 문자 체크
@@ -428,6 +440,17 @@ $mailError.innerHTML = 'Success';
 });
 }
 
+//성별, 나이값 가져오기
+
+const radios = document.querySelectorAll('input[type="radio"]');
+
+radios.forEach(radio => {
+  radio.addEventListener('click', event => {
+    // 클릭한 라디오 버튼의 값을 가져옵니다.
+    const value = event.target.value;
+    console.log(value);
+  });
+});
 
 
 
@@ -438,15 +461,3 @@ $mailError.innerHTML = 'Success';
 
 
 
-//해야하는거 아이디 중복확인 데이터베이스 필요
-// 닉네임 중복확인 데이터베이스 필요
-// 아이디,비밀번호 영문,숫자 입력 체크 기능 대강완료
-// 이메일 기본 기입방법과 일치하는지 체크 여부 대강완료
-// 선택 제외 모든항목 기입시 회원가입 버튼 활성화 대강완료
-// 올바른 이메일 입력시 인증코드 받기 버튼 활성화 대강완료
-// 인증코드 발송 기능 API 찾기 스프링 필요
-// 인증확인이 됬을경우 인증완료 버튼 활성화 스프링 필요
-// 서비스 이용약관,개인정보 처리방치동의 했을시 체크버튼 활성화,창으로뛰우기 대강완료
-// 취소시 올리셋 나가기
-// 인증코드받기 버튼 누를시 타이머 동작기능 // 대강완료
-// 나이부분에 년도,월 오늘날짜 이상으로 적어지는거 막기 // 대강완료

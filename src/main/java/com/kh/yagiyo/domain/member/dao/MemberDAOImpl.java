@@ -37,17 +37,17 @@ public class MemberDAOImpl implements MemberDAO {
     sql.append("    id, ");
     sql.append("    pw, ");
     sql.append("    nick, ");
-    sql.append("    email ");
-//    sql.append("    gender, ");
-//    sql.append("    age, ");
+    sql.append("    email, ");
+    sql.append("    gender, ");
+    sql.append("    age ");
     sql.append(") values( ");
     sql.append("    Memberid_seq.nextval, ");
     sql.append("    :id, ");
     sql.append("    :pw, ");
     sql.append("    :nick, ");
-    sql.append("    :email ");
-//    sql.append("    :gender, ");
-//    sql.append("    :age ");
+    sql.append("    :email, ");
+    sql.append("    :gender, ");
+    sql.append("    :age ");
     sql.append(") ");
 
     SqlParameterSource param = new BeanPropertySqlParameterSource(member);
@@ -69,7 +69,9 @@ public class MemberDAOImpl implements MemberDAO {
     sql.append("   set id = :id, ");
     sql.append("       pw = :pw, ");
     sql.append("       nick = :nick, ");
-    sql.append("       email = :email ");
+    sql.append("       email = :email, ");
+    sql.append("       gender = :gender, ");
+    sql.append("       age = :age ");
     sql.append(" where memberid = :memberId ");
 
     SqlParameterSource param = new MapSqlParameterSource()
@@ -77,6 +79,8 @@ public class MemberDAOImpl implements MemberDAO {
         .addValue("pw", member.getPw())
         .addValue("nick", member.getNick())
         .addValue("email", member.getEmail())
+        .addValue("gender", member.getGender())
+        .addValue("age", member.getAge())
         .addValue("memberId", member.getMemberId());
 
     template.update(sql.toString(), param);
@@ -206,6 +210,8 @@ public class MemberDAOImpl implements MemberDAO {
     sql.append("       pw, ");
     sql.append("       email, ");
     sql.append("       nick, ");
+    sql.append("       gender, ");
+    sql.append("       age, ");
     sql.append("       gubun ");
     sql.append("  from member ");
     sql.append(" where id = :id and pw = :pw ");
@@ -286,7 +292,7 @@ public class MemberDAOImpl implements MemberDAO {
     return isExist;
   }
 
-  //비밀번호변경
+  //비밀번호변경,나이,성별 입력
   @Override
   public void changePasswd(String email, String pw) {
     StringBuffer sql = new StringBuffer();

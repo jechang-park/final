@@ -40,12 +40,12 @@
     <br>
     <div>
     <label for="gender">성별 :</label>
-    <span th:text="${session.loginMember.gender}"></span>
+        <input type="text" id="gender" name="gender" th:value="${session.loginMember.gender}" placeholder="성별을 입력해주세요"/>
     </div>
     <br>
     <div>
     <label for="age">나이 :</label>
-    <span th:text="${session.loginMember.age}"></span>
+        <input type="text" id="age" name="age" th:value="${session.loginMember.age}" placeholder="나이를 입력해주세요"/>
     </div>
     <br>
     <div><button type="submit" th:text="#{button.update}">수정</button></div>
