@@ -2,6 +2,7 @@ package com.kh.yagiyo.web;
 
 import com.kh.yagiyo.domain.entity.Member;
 import com.kh.yagiyo.domain.member.svc.MemberSVC;
+import com.kh.yagiyo.web.form.member.JoinForm;
 import com.kh.yagiyo.web.form.member.MemberFixForm;
 import com.kh.yagiyo.web.form.member.MemberDeleteForm;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,7 +44,11 @@ public class mypageController {
         }
         return "redirect:/";
     }
-
+    @GetMapping("add")
+    public String joinForm(Model model) {
+        model.addAttribute("joinForm", new JoinForm());
+        return "/member/joinForm";
+    }
 @GetMapping("/{memberId}/fix")
 public String memberInformation(Model model,HttpServletRequest request) {
     // HttpSession 객체를 이용하여 세션에서 사용자 정보를 가져옴
@@ -53,8 +58,8 @@ public String memberInformation(Model model,HttpServletRequest request) {
     } else {
         LoginMember loginMember = (LoginMember) session.getAttribute(SessionConst.LOGIN_MEMBER);
         if (loginMember != null) {
-            String username = loginMember.getNick();
-            model.addAttribute("username", username);
+            String MemberFixForm = loginMember.getNick();
+            model.addAttribute("memberFixForm", MemberFixForm);
             return "/member/memberFix"; // 세션에 저장된 회원 정보를 사용하여 회원 정보 수정 페이지로 이동합니다.
         } else {
             return "redirect:/"; // 세션에 로그인 정보가 없으면 메인 페이지로 이동합니다.
@@ -86,16 +91,19 @@ public String memberInformation(Model model,HttpServletRequest request) {
         // 수정된 회원 정보를 다시 세션에 저장
         LoginMember updatedLoginMember = new LoginMember(
             loginMember.getMemberId(),
-            loginMember.getId(),
-            loginMember.getPw(),
-            loginMember.getNick(),
-            loginMember.getEmail(),
-            loginMember.getGender(),
-            loginMember.getAge(),
-            loginMember.getGubun()
+            memberFixForm.getId(),
+            memberFixForm.getPw(),
+            memberFixForm.getNick(),
+            memberFixForm.getEmail(),
+            memberFixForm.getGender(),
+            memberFixForm.getAge(),
+            memberFixForm.getGubun()
         );
         session.setAttribute(SessionConst.LOGIN_MEMBER, updatedLoginMember);
-
+        log.info(memberFixForm.getGender());
+        log.info(memberFixForm.getAge());
+        log.info(loginMember.getGender());
+        log.info(loginMember.getAge());
         // 수정 완료 후 홈 화면으로 리다이렉트
 
         return "redirect:/mypage/{memberId}/fix";

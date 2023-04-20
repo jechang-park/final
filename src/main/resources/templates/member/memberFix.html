@@ -38,17 +38,29 @@
     <span th:text="${session.loginMember.email}"></span>
     </div>
     <br>
+<!--    <div>-->
+<!--    <label for="gender">성별 :</label>-->
+<!--        <input type="text" id="gender" name="gender" th:value="${session.loginMember.gender}" placeholder="성별을 입력해주세요"/>-->
+<!--    </div>-->
     <div>
-    <label for="gender">성별 :</label>
-        <input type="text" id="gender" name="gender" th:value="${session.loginMember.gender}" placeholder="성별을 입력해주세요"/>
+        <label for="gender">성별 :</label>
+        <input type="radio" id="male" name="gender" value="male" th:checked="${session.loginMember.gender == 'male'}">
+        <label for="male">남성</label>
+        <input type="radio" id="female" name="gender" value="female" th:checked="${session.loginMember.gender == 'female'}">
+        <label for="female">여성</label>
     </div>
     <br>
+<!--    <div>-->
+<!--    <label for="age">나이 :</label>-->
+<!--        <input type="text" id="age" name="age" th:value="${session.loginMember.age}" placeholder="나이를 입력해주세요"/>-->
+<!--    </div>-->
     <div>
-    <label for="age">나이 :</label>
-        <input type="text" id="age" name="age" th:value="${session.loginMember.age}" placeholder="나이를 입력해주세요"/>
+        <label for="age">나이 :</label>
+        <input type="date" id="age" name="age" th:value="${session.loginMember.age}" placeholder="나이를 입력해주세요"/>
     </div>
+
     <br>
-    <div><button type="submit" th:text="#{button.update}">수정</button></div>
+    <div><button type="submit" id="fixBtn" th:text="#{button.update}">수정</button></div>
     <div><button type="button" id="addBtn">마이페이지</button></div>
 </form>
 <script>
@@ -98,6 +110,10 @@ $pw.addEventListener('input', function () {
   }
 });
 }
+
+fixBtn.addEventListener('click', function(){
+alert("회원 정보 수정이 완료되었습니다.");
+})
 
 </script>
 </body>

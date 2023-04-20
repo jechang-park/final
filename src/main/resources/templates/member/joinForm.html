@@ -175,9 +175,6 @@
           </div>
         </div>
 
-<!--        <label for="gender" class="container_contents_item"-->
-<!--        >성별 (선택)</label-->
-<!--        >-->
           <label for="man" class="container_contents_item" name="gender" value="남자" >'남'</label>
           <input
               disabled
@@ -185,7 +182,7 @@
               class="container_contents_item"
               name="gender"
               unchecked=""
-              value="man"
+              value="male"
               id="man"
               th:field="*{gender}"
           />
@@ -195,16 +192,16 @@
               type="radio"
               class="container_contents_item"
               name="gender"
-              value="women"
+              value="female"
               id="women"
               th:field="*{gender}"
           />
         <label for="age" class="container_contents_item">나이 (선택)</label>
         <input
             disabled
-            min="1950-01"
-            max="2023-03"
-            type="month"
+            min="1950-01-01"
+            max="2023-04-20"
+            type="date"
             class="container_contents_item_input"
             th:field="*{age}"
         />

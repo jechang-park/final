@@ -11,20 +11,52 @@
     <div id="pwError"></div>
     <button disabled="true" type="submit" id="buttonDel">탈퇴</button>
 </form>
+
+<!-- 모달창 추가 -->
+<div id="myModal" class="modal" hidden="true">
+    <div class="modal-content">
+        <h4>정말로 탈퇴하시겠습니까?</h4>
+        <button id="confirmDel">확인</button>
+        <button id="cancelDel">취소</button>
+    </div>
+</div>
+
 <script th:inline="javascript">
     const pwError = document.getElementById("pwError");
     const pw = document.getElementById("pw");
     const buttonDel = document.getElementById("buttonDel");
+    const modal = document.getElementById("myModal");
+    const confirmBtn = document.getElementById("confirmDel");
+    const cancelBtn = document.getElementById("cancelDel");
+
     pw.addEventListener("input", function(e) {
-        if(pw.value == /*[[${session.loginMember.pw}]]*/ ''){
-        pwError.style.color = 'green';
-        pwError.innerHTML = "비밀번호가 일치합니다."
+        if (pw.value === /*[[${session.loginMember.pw}]]*/ '') {
+            pwError.style.color = 'green';
+            pwError.innerHTML = "비밀번호가 일치합니다."
             buttonDel.disabled = false;
-        }else{
-        pwError.style.color = 'red';
-        pwError.innerHTML = "비밀번호가 일치하지 않습니다.";
-        buttonDel.disabled = true;
+        } else {
+            pwError.style.color = 'red';
+            pwError.innerHTML = "비밀번호가 일치하지 않습니다.";
+            buttonDel.disabled = true;
         }
+    });
+
+    // 탈퇴 버튼을 누르면 모달창 표시
+    buttonDel.addEventListener("click", function(e) {
+        e.preventDefault();
+        myModal.hidden = false;
+        modal.style.display = "block";
+    });
+
+    // 확인 버튼을 누르면 탈퇴 실행
+    confirmBtn.addEventListener("click", function(e) {
+        modal.style.display = "none";
+        document.querySelector('form').submit(); // 탈퇴 폼 제출
+    });
+
+    // 취소 버튼을 누르면 모달창 숨김
+    cancelBtn.addEventListener("click", function(e) {
+        modal.style.display = "none";
     });
 </script>
 </body>
