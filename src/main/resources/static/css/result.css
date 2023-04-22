@@ -444,30 +444,19 @@
     element.style {
       background-color: #b1d9f2;
     }
-    #surveyv3.surveyv3-result > .survey-nav > ul li .img-wrap {
-      display: inline-block;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-    }
-    #surveyv3.surveyv3-result > .survey-nav > ul li .img-wrap {
-      position: absolute;
-      left: 10px;
-      display: block;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-    }
+#surveyv3.surveyv3-result > .survey-nav > ul li .img-wrap {
+  position: relative;
+  display: block;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto;
+  text-align: center;
+  background-color: #f9d4bf;
+}
     #surveyv3.surveyv3-result > .survey-nav > ul li .img-wrap img {
-      width: 36px;
-    }
-    #surveyv3.surveyv3-result > .survey-nav > ul li .img-wrap img {
-      width: 60px;
-    }
-
-    img {
       max-width: 100%;
-      height: auto;
+      max-height: 100%;
     }
     #surveyv3.surveyv3-result > .survey-nav > ul li .text-wrap {
       display: inline-block;
